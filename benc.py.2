@@ -1,0 +1,8 @@
+#! /usr/bin/python3
+
+import fastbencode, sys, json
+
+c=sys.stdin.buffer.read()
+d=fastbencode.bdecode(c)
+#print(json.dumps(d))
+print(d)
