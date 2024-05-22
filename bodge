@@ -1,0 +1,24 @@
+#! /bin/bash
+
+cat closure.txt | \
+	sed -e 's|^/nix/store/||' \
+		 -e 's/-.*$//' \
+	| \
+(while read; do
+	echo $REPLY	
+	tmpd=`mktemp -d`
+	mkdir $tmpd/nix
+	cd $tmpd/nix
+	echo $tmpd
+	inff=${REPLY}.narinfo
+	ln -s ~/mnt2/$inff .
+	nar=$(grep ^URL: $inff | awk '{print $2}')
+	mkdir nar
+	ln -s ~/mnt2/$nar nar
+	cd ..
+	transmission-create -o ~/torr.d/$REPLY.torrent nix
+	cd /
+	rm $tmpd/nix/nar/* $tmpd/nix/*.narinfo
+	rmdir $tmpd/nix/nar $tmpd/nix $tmpd
+done)
+
