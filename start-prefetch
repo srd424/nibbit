@@ -10,7 +10,8 @@ NIX_EXPR="/home/steved/src/aux/full"
 ATTR_PATH="stdenv"
 NIX_CMD="nix --extra-experimental-features nix-command"
 DL_DIR=os.environ["HOME"] + "/.cache/nibbit"
-TRACKER="http://192.168.128.211:6969/announce"
+#TRACKER="http://192.168.128.211:6969/announce"
+TRACKER="http://bt.aux-cache.dev:9996/announce"
 DEBUG=False
 
 os.system("git -C "+REPO_DIR+" pull")
