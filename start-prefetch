@@ -24,8 +24,11 @@ print(DL_DIR)
 
 aria2 = aria2p.API(aria2p.Client())
 
-store_hash=re.split("[/-]",os.popen(NIX_CMD + " derivation show -f " + NIX_EXPR + " " + ATTR_PATH + \
-	"| jq -r 'first(.[]).outputs.out.path'").read().rstrip())[3]
+store_path=os.popen(NIX_CMD + " derivation show -f " + NIX_EXPR + " " + ATTR_PATH + \
+	"| jq -r 'first(.[]).outputs.out.path'").read().rstrip()
+store_hash=re.split("[/-]",store_path)[3]
+
+print("Top-level store path: " + store_path)
 
 def dbg(s):
 	if DEBUG:
