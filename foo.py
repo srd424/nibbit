@@ -6,9 +6,19 @@ REPO_DIR="/home/steved/src/aux/torrent/map.git"
 NIX_EXPR="/home/steved/src/aux/full"
 ATTR_PATH="stdenv"
 NIX_CMD="nix --extra-experimental-features nix-command"
+DL_DIR=os.environ["HOME"] + "/.cache/nibbit"
 DEBUG=False
 
-#os.system("git -C "+REPO_DIR+" pull")
+os.system("git -C "+REPO_DIR+" pull")
+
+exclude_file=REPO_DIR + "/.git/info/exclude"
+
+if not re.search('\.aria\.gid',open(exclude_file).read()):
+	open(exclude_file,"a").write("*.aria.gid")
+
+print(DL_DIR)
+
+exit(0)
 
 store_hash=re.split("[/-]",os.popen(NIX_CMD + " derivation show -f " + NIX_EXPR + " " + ATTR_PATH + \
 	"| jq -r 'first(.[]).outputs.out.path'").read().rstrip())[3]
