@@ -22,3 +22,5 @@ cat closure.txt | \
 	rmdir $tmpd/nix/nar $tmpd/nix $tmpd
 done)
 
+
+#for f in $(find map.git -name '*.torrent'); do cat $f | ./b2j.py >$f.json; done

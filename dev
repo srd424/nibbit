@@ -1,0 +1,3 @@
+#! /bin/bash
+
+nix-shell -p python311Packages.aria2p httpie aria2
