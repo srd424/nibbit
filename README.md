@@ -4,6 +4,8 @@
 the closure is computed by following `References:` headers in the `.narinfo`s, so the whole closure must be available. Later on
 we might be able to work around incomplete runtime closures by using the build-time closure instead.
 
+Config is currently done by changing variables at the top of the source file.
+
 0. `./dev` to get a nix-shell with deps
 1. Start aria2c: `aria2c -D --enable-rpc=true --bt-detach-seed-only=true`
 2. Checkout a repo of torrent & narinfos, e.g. https://github.com/srd424/aux-torrent, set `REPO_DIR` to checkout dir
