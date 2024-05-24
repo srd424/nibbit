@@ -14,3 +14,12 @@ we might be able to work around incomplete runtime closures by using the build-t
 `aria2p show` can be used to monitor download progress; downloads will go to `DL_DIR`, by default `~/.cache/nibbit/nix`. When finished,
 `nix --extra-experimental-features nix-command copy --from file://$HOME/.cache/nibbit/nix <STORE_PATH>`should import the cached binaries
 into your nix store (the top-level `<STORE_PATH>` is printed by `start-prefetch`.)
+
+# TODOs
+
+- a proper command line
+- a config file
+- tool to check if the download of a given closure has finished (which could then automatically import the nars)
+- a proper tool to 'publish' torrents
+- a cleanup/prune tool to remove older torrents (maybe anything that's not in the subscribed/published closures, possibly plus a few older files up to a defined limit)
+- support for multiple simultaneous expression + attribute combinations
