@@ -1,6 +1,30 @@
 #! /bin/bash
 
-cat closure.txt | \
+set -e
+#set -x
+
+S3MNT=$HOME/mnt2
+
+STARTDIR=$PWD
+REPO=$STARTDIR/map.git
+UTILS=$STARTDIR/utils
+TRACKER="http://bt.aux-cache.dev:9996/announce"
+
+subd () {
+	local d="$1"
+	local f="$2"
+	local sub=$(echo "$f" | cut -c 1-1)
+	mkdir -p "${d}/${sub}"
+	echo "${d}/${sub}/${f}"
+}
+
+closuref="$1"; shift
+if [ -z "$closuref" ]; then
+	echo "Usage: gen-torrents <closure-file>\n"
+	exit 1
+fi
+
+cat $closuref | \
 	sed -e 's|^/nix/store/||' \
 		 -e 's/-.*$//' \
 	| \
@@ -11,12 +35,15 @@ cat closure.txt | \
 	cd $tmpd/nix
 	echo $tmpd
 	inff=${REPLY}.narinfo
-	ln -s ~/mnt2/$inff .
+	ln -s $S3MNT/$inff .
 	nar=$(grep ^URL: $inff | awk '{print $2}')
 	mkdir nar
-	ln -s ~/mnt2/$nar nar
+	ln -s $S3MNT/$nar nar
 	cd ..
-	transmission-create -o ~/torr.d/$REPLY.torrent nix
+	cp -av $S3MNT/$inff $(subd $REPO $inff)
+	torrentf=$(subd $REPO $REPLY.torrent)
+	transmission-create -t "$TRACKER" -o "$torrentf" nix
+	<$torrentf $UTILS/b2j.py | jq >${torrentf}.json
 	cd /
 	rm $tmpd/nix/nar/* $tmpd/nix/*.narinfo
 	rmdir $tmpd/nix/nar $tmpd/nix $tmpd
